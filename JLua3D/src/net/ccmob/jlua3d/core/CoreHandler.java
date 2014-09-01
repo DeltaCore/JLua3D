@@ -17,6 +17,7 @@ public class CoreHandler {
 
 	static Globals globals;
 	static LuaValue sys_exec;
+	static LuaValue keyAction;
 	static long c = System.nanoTime();
 	static long previousTime = System.nanoTime();
 	static double delta = 0;
@@ -128,6 +129,7 @@ public class CoreHandler {
 		globals.loadfile("res/main.lua").call();
 
 		sys_exec = globals.get("SYS_execute");
+		keyAction  = globals.get("SYS_KeyAction");
 	}
 
 	public static void run() {
@@ -143,4 +145,8 @@ public class CoreHandler {
 		}
 	}
 
+	public static void keyAction(boolean updown, int keyCode){
+		keyAction.call(LuaValue.valueOf(updown), LuaValue.valueOf(keyCode));
+	}
+	
 }

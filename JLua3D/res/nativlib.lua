@@ -1,8 +1,15 @@
+local clock = os.clock
+function sleep(n)  -- seconds
+  local t0 = clock()
+  while clock() - t0 <= n do end
+end
+
+SRL = {}
+
 -- Native SRL lib
 -- SRL -> SoftwareRenderingLibrary	
-SRL = {}
-local keys = {}
-local pressedKeys = {}
+
+require 'res/keys'
 
 -- FPS counter stuff
 
@@ -12,18 +19,6 @@ local lastTime = 0
 
 local fps = 0
 local sCnt = 0.0
-
-function Key_Down(keyCode)
-	keys[keyCode] = true
-end
-
-function Key_Up(keyCode)
-	keys[keyCode] = false
-end
-
-function Key_Pressed(keyCode)
-	pressedKeys[keyCode] = true
-end
 
 function SRL.placeText(x,y,text,textSize,r,g,b,a)
 	GR2D_setRGB(r,g,b)
@@ -61,8 +56,11 @@ function SRL.clearScreen(r,g,b)
 	GR2D_clearAll(r,g,b)
 end
 
-function SRL.isKeyDown(keyCode)
-	return keys[keyCode]
+function SRL.capFps(cFps)
+	if cFps < fps then
+		--sleep(0.1)
+		sleep((1 / fps)/2)
+	end
 end
 
 function SRL.checkFps()
@@ -98,6 +96,37 @@ end
 
 function SRL.exit()
 	SRL.running = false
+end
+
+function print_r(tbl, tabIndex)
+	local tback = tabIndex
+	if tabIndex == nil then
+		tback = 0
+	end
+	local tab = ""
+	for i = 0, tback do
+		tab = tab .. "  "
+	end
+	if type(tbl) == "table" then
+		for index, value in pairs(tbl) do
+			if type(value) == "table" then
+				local str = '"' .. index .. '" => '
+				print(tab .. str .. "[")
+				tabIndex = tonumber(tback)
+				local b = ""
+				for i = 1, string.len(str)  do
+					b = b .. " "
+				end
+				print_r(value, tabIndex+(string.len(str) / 2))
+				tback = tback - 2
+				print(tab .. b .. "[")
+			else
+				print(tab .. '"' .. index .. '" => "', value ,'"')
+			end
+		end
+	else
+		print(tab .. "[" .. tbl .. "]")
+	end	
 end
 
 function SYS_execute()

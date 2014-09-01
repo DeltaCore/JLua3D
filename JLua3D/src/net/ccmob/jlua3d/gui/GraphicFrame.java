@@ -7,6 +7,8 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -31,6 +33,23 @@ public class GraphicFrame extends JFrame {
 		this.setSize(new Dimension(CoreHandler.gr2d_width,CoreHandler.gr2d_height));
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.add(new GPanel());
+		this.addKeyListener(new KeyListener() {
+			
+			@Override
+			public void keyTyped(KeyEvent e) {
+				
+			}
+			
+			@Override
+			public void keyReleased(KeyEvent e) {
+				CoreHandler.keyAction(false, e.getKeyCode());
+			}
+			
+			@Override
+			public void keyPressed(KeyEvent e) {
+				CoreHandler.keyAction(true, e.getKeyCode());
+			}
+		});
 		this.setVisible(true);
 	}
 	

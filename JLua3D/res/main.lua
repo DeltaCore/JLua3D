@@ -137,13 +137,28 @@ end
 
 local scene = SunSystem(20,1024,10,4)
 
+local x = GR2D_WIDTH / 2
+local y = GR2D_HEIGHT / 2
+local speed = 50
+
 function SRL.Update(delta)
+	SRL.capFps(30)
 	SRL.checkFps()
 	scene.Update(delta)
+	if Keys.isKeyDown(KeyCodes.arrowKeys.down) then
+		y = y + (speed * delta)
+	elseif Keys.isKeyDown(KeyCodes.arrowKeys.up) then
+		y = y - (speed * delta)
+	elseif Keys.isKeyDown(KeyCodes.arrowKeys.right) then
+		x = x + (speed * delta)
+	elseif Keys.isKeyDown(KeyCodes.arrowKeys.left) then
+		x = x - (speed * delta)
+	end
 end
 
 function SRL.Render()
 	SRL.clearScreen(0,0,0)
 	scene.Render()
 	SRL.placeText(10, 50, "FPS: " .. SRL.getCurrentFPS(), 40, 255, 255, 255, 255)
+	SRL.drawArc(x,y,25,0,360,255,0,0,255)
 end

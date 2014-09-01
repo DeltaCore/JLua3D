@@ -1,5 +1,3 @@
-require 'math'
-
 function StarField(stars, spread, speed)
 	local self = {}
 	self.stars = stars
@@ -74,7 +72,7 @@ function StarField(stars, spread, speed)
 	end
 
 	return self
-end]]
+end
 
 local scene = StarField(1024, 20, 4)
 
@@ -85,6 +83,6 @@ end
 
 function SRL.Render()
 	SRL.clearScreen(0,0,0)
-	scene.render()
+	scenender()
 	SRL.placeText(10, 50, "FPS: " .. SRL.getCurrentFPS(), 40, 255, 255, 255, 255)
 end
